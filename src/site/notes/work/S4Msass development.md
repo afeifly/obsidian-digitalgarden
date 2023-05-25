@@ -26,7 +26,9 @@ drop database thingsboard
 
 ## S4Msass run in Linux 
 ```bash
-# Install
+# Clone from source code , The latest develop version.
+git clone -b devbranch https://app.suto-itec.asia:10443/s4m/s4msaas.git
+# CD to s4msass. Build & Install  
 mvn clean install -Dlicense.skip=true -DskipTests -e
 cd ./application/target
 dpkg -i thingsboard.deb
@@ -37,13 +39,17 @@ vim /usr/share/thingsboard/conf/thingsboard.conf
 # Add to conf file
 export DATABASE_ENTITIES_TYPE=sql
 export DATABASE_TS_TYPE=sql
-export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect export SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
-export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/thingsboard export SPRING_DATASOURCE_USERNAME=postgres
+export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+export SPRING_DRIVER_CLASS_NAME=org.postgresql.Driver
+export SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/thingsboard
+export SPRING_DATASOURCE_USERNAME=postgres
 export SPRING_DATASOURCE_PASSWORD=postgres
 
 # Run install script
 cd /usr/share/thingsboard/bin/install
 ./install.sh --loadDemo
+# or
+/usr/share/thingsboard/bin/install/install.sh --loadDemo
 
 # Start thingsboard service
 service thingsboard start
@@ -134,7 +140,7 @@ select * from attribute_kv where attribute_type = 'CLIENT_SCOPE';
 ```
 
 
-Try cassendra
+Try work with cassendra
 ```bash
 # config
 export DATABASE_ENTITIES_TYPE=sql
