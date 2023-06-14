@@ -28,7 +28,7 @@ drop database thingsboard
 ```bash
 # Clone from source code , The latest develop version.
 git clone -b devbranch https://app.suto-itec.asia:10443/s4m/s4msaas.git
-# CD to s4msass. Build & Install  
+# CD to s4msass path Build & Install 
 mvn clean install -Dlicense.skip=true -DskipTests -e
 cd ./application/target
 dpkg -i thingsboard.deb
@@ -104,7 +104,31 @@ ng serve --open
 ```
 
 
-## S4M Sass Simulator
+## Clear DB in S4M Saas
+
+```bash
+# Stop S4M application
+service thingsboard stop
+# Check port 8080 not in use
+netstat -anp | grep 8080
+
+# 
+#go inside docker DB container
+docker exec -it ex-test-postgres bash
+#login postgres
+psql -U postgres -d postgres -h 127.0.0.1 -W
+# drop thingsboard DB
+drop database thingsboard;
+# create empty one
+create database thingsboard;
+# init DB structure
+/usr/share/thingsboard/bin/install/install.sh --loadDemo
+# start S4M application
+service thingsboard start
+```
+
+
+## S4M Saas Simulator
 
 ### S4M Saas Create Tenant
 
@@ -140,7 +164,7 @@ select * from attribute_kv where attribute_type = 'CLIENT_SCOPE';
 ```
 
 
-Try work with cassendra
+Try cassendra
 ```bash
 # config
 export DATABASE_ENTITIES_TYPE=sql
@@ -194,6 +218,13 @@ cqlsh:thingsboard> select * from ts_kv_cf;
  API_USAGE_STATE | 05359790-dd94-11ed-8620-0f4a384ba42f |                     dbApiState | 1680307200000 | 1681786333065 |   null |  null |   null |   null | ENABLED
 ```
 
+## Bugs?
+
+```bash
+1. Maybe too much http request.
+Max retries exceeded with url
+
+```
 
 #s4m 
 #thingsboard
